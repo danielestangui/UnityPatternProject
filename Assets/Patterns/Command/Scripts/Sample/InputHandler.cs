@@ -6,18 +6,20 @@ namespace Patterns.Command.Sample
 {
     public class InputHandler : MonoBehaviour
     {
-        private MoveCommand moveCommand;
-
-        private void Start()
-        {
-            moveCommand = new MoveCommand(transform);
-        }
 
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.S)) 
             {
-                moveCommand.Execute();
+                CommandManager.Instance.AddCommand(new MoveCommand(transform));
+            }
+
+            if (Input.GetKeyDown(KeyCode.Backspace)) 
+            {
+                if (CommandManager.Instance.commandsBuffer.Count > 0) 
+                {
+                    CommandManager.Instance.commandsBuffer.Pop().Undo();
+                }
             }
         }
     }
